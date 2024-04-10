@@ -19,11 +19,11 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
     {
         return 1;
     }
-    if (PC < 0 || PC >= 16384)
+    unsigned index = PC >> 2;
+    if (PC > 16383)
     {
         return 1;
     }
-    unsigned index = PC >> 2;
     *instruction = Mem[index];
     return 0;
 }
