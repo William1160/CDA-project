@@ -5,14 +5,27 @@
 /* 10 Points */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
-
+    
 }
 
 /* instruction fetch */
 /* 10 Points */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-
+    if(Mem == NULL || instruction == NULL) {
+        return 1;
+    }
+    if (PC % 4 != 0)
+    {
+        return 1;
+    }
+    if (PC < 0 || PC >= 16384)
+    {
+        return 1;
+    }
+    unsigned index = PC >> 2;
+    *instruction = Mem[index];
+    return 0;
 }
 
 
@@ -76,3 +89,4 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
 
 }
 
+// ./cisproject/spimcore cisproject/input_file.asc
