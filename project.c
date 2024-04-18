@@ -33,6 +33,14 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 /* 10 Points */
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
+    
+    *op =     (instruction & 0xfc000000) >> 26;        // instructions [31-26]        1111 1100 0000 0000 0000 0000 0000 0000
+    *r1 =     (instruction & 0x03e00000) >> 21;        // instructions [25-21]        0000 0011 1110 0000 0000 0000 0000 0000
+    *r2 =     (instruction & 0x001f0000) >> 16;        // instructions [20-16]        0000 0000 0001 1111 0000 0000 0000 0000
+    *r3 =     (instruction & 0x0000f800) >> 11;        // instructions [15-11]        0000 0000 0000 0000 1111 1000 0000 0000
+    *funct =  (instruction & 0x0000003f);              // instructions [5-0]          0000 0000 0000 0000 0000 0000 0011 1111
+    *offset = (instruction & 0x0000ffff);              // instructions [15-0]         0000 0000 0000 0000 1111 1111 1111 1111
+    *jsec =   (instruction & 0x003fffff);              // instructions [25-0]         0000 0011 1111 1111 1111 1111 1111 1111
 
 }
 
