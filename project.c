@@ -51,7 +51,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 int instruction_decode(unsigned op,struct_controls *controls)
 {
     switch(op) {
-        case 0x00:                    // R-type instructions
+        case 0x00:                    // R-type
             controls->RegDst = '1';
             controls->Jump = '0';
             controls->Branch = '0';
