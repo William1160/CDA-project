@@ -167,6 +167,7 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
+    /*
     if((offset & 0x1) == 1){
         *extended_value = offset << 16;
         *extended_value = *extended_value + 0xFFFF;
@@ -174,6 +175,14 @@ void sign_extend(unsigned offset,unsigned *extended_value)
     else{
         *extended_value = offset << 16;
     }
+    */
+
+    // shouldn't you check the leftmost bit of offset?
+    // so something like
+    if(offset >> 15 == 1)
+        *extended_value = offset | 0xffff0000; // since it's negative you add 1's to the front
+    else
+        *extended_value = offset & 0x0000ffff; // is positive so add 0's to front
 }
 
 /* ALU operations */
