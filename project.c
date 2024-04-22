@@ -4,14 +4,44 @@
 /* 10 Points */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
-    
+    switch(ALUControl){
+        case 0x0:
+            *ALUresult = A + B;
+            break;
+        case 0x1:
+            *ALUresult = A - B;
+            break;
+        case 0x2:
+            *ALUresult = ((int)A < (int)B) ? 1 : 0; // signed, hence (int) to cast
+            break;
+        case 0x3:
+            *ALUresult = (A < B) ? 1 : 0; // unsigned, no casting needed
+            break;
+        case 0x4:
+            *ALUresult = A & B;
+            break;
+        case 0x5:
+            *ALUresult = A | B;
+            break;
+        case 0x6:
+            *ALUresult = B << 16;
+            break;
+        case 0x7:
+            *ALUresult = ~A;
+            break;
+    }
+
+    if(ALUresult == 0)
+        *Zero = 1;
+    else
+        *Zero = 0;
 }
 
 /* instruction fetch */
 /* 10 Points */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-    if(Mem == NULL || instruction == NULL) {
+    if(Mem == NULL || instruction == NULL){
         return 1;
     }
     if (PC % 4 != 0)
@@ -189,7 +219,42 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
-   
+    if(ALUOp <= 0 || ALUOp > 7)
+        return 1;
+    
+    if(ALUOp == 7){
+        switch(funct) {
+            case 0x20: // add
+                ALUControl = 0;
+                break;
+            case 0x22: // sub
+                ALUControl = 1;
+                break;
+            case 0x24: // and
+                ALUControl = 4;
+                break;
+            case 0x25: // or
+                ALUControl = 5;
+                break;
+            case 0x2a: // slt
+                ALUControl = 2;
+                break;
+            case 0x2b: // sltu
+                ALUControl = 3;
+                break;
+            default:
+                return 1;
+        }
+
+        if(ALUSrc == 1)
+            ALU(data1, extended_value, ALUOp, ALUresult, Zero);
+        else
+            ALU(data1, data2, ALUOp, ALUresult, Zero);
+
+        return 0;
+    }
+
+    
 }
 
 /* Read / Write Memory */
