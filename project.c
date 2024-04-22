@@ -180,7 +180,7 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
-
+   
 }
 
 /* Read / Write Memory */
@@ -195,7 +195,26 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
-
+    if(RegWrite == '1'){
+        if(MemtoReg == '1'){
+            if (RegDst == '1')
+            {
+                Reg[r3] = memdata;
+            }
+            else
+            {
+                Reg[r2] = memdata;
+            }
+        }
+        else{
+            if(RegDst == '1'){
+                Reg[r3] = ALUresult;
+            }
+            else{
+                Reg[r2] = ALUresult;
+            }
+        }
+    }
 }
 
 /* PC update */
