@@ -4,7 +4,7 @@
 /* 10 Points */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 {
-    switch(ALUControl){
+    switch(ALUControl) {
         case 0x0:
             *ALUresult = A + B;
             break;
@@ -197,10 +197,6 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
-    // shouldn't you check the leftmost bit of offset?
-    // so something like
-    // I thought it was the first bit but his slides said the 16th bit and I got confused
-    // looking back at it now this is definitely the way its supposed to be done
     if(offset >> 15 == 1)
         *extended_value = offset | 0xffff0000; // since it's negative you add 1's to the front
     else
@@ -214,7 +210,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
     if(ALUOp <= 0 || ALUOp > 7)
         return 1;
     
-    if(ALUOp == 7){
+    if(ALUOp == 7) {
         switch(funct) {
             case 0x20: // add
                 ALUControl = 0;
@@ -253,7 +249,19 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
+    if(MemRead == 1) {
+        if(ALUresult % 4 != 0)
+            return 1;
+        *memdata = Mem[ALUresult >> 2];
+    }
+    
+    if(MemWrite == 1) {
+        if(ALUresult % 4 != 0)
+            return 1;
+        Mem[ALUresult >> 2] = data2;
+    }
 
+    return 0;
 }
 
 
@@ -261,8 +269,8 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
-    if(RegWrite == '1'){
-        if(MemtoReg == '1'){
+    if(RegWrite == '1') {
+        if(MemtoReg == '1') {
             if (RegDst == '1')
             {
                 Reg[r3] = memdata;
@@ -272,11 +280,11 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
                 Reg[r2] = memdata;
             }
         }
-        else{
-            if(RegDst == '1'){
+        else {
+            if(RegDst == '1') {
                 Reg[r3] = ALUresult;
             }
-            else{
+            else {
                 Reg[r2] = ALUresult;
             }
         }
@@ -290,7 +298,7 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
 
 }
 
-void WinMain(){
+void WinMain() {
 
 }
 // ./cisproject/spimcore cisproject/input_file.asc
