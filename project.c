@@ -306,5 +306,6 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
 
 void WinMain() {
     // where did this class come from and what are we supposed to do with it?
+    // my code was not compiling because this file did not have a main function so I added one
 }
 // ./cisproject/spimcore cisproject/input_file.asc
