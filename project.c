@@ -213,22 +213,22 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
     if(ALUOp == 7) {
         switch(funct) {
             case 0x20: // add
-                ALUControl = 0;
+                ALUOp = 0;
                 break;
             case 0x22: // sub
-                ALUControl = 1;
+                ALUOp = 1;
                 break;
             case 0x24: // and
-                ALUControl = 4;
+                ALUOp = 4;
                 break;
             case 0x25: // or
-                ALUControl = 5;
+                ALUOp = 5;
                 break;
             case 0x2a: // slt
-                ALUControl = 2;
+                ALUOp = 2;
                 break;
             case 0x2b: // sltu
-                ALUControl = 3;
+                ALUOp = 3;
                 break;
             default:
                 return 1;
